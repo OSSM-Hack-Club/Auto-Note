@@ -1,0 +1,12 @@
+0.0:  The stale smell of old beer lingers.
+
+4.0:  It takes heat to bring out the odor.
+
+7.0:  A cold dip restores health and zest.
+
+10.0:  A salt pickle tastes fine with ham.
+
+13.0:  Tacos al pastor are my favorite.
+
+15.0:  A zestful food is the hot cross bun.
+

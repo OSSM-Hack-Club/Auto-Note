@@ -1,6 +1,27 @@
+import os.path
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 from datasets import load_dataset
+from sys import argv
+
+file_path = argv[1]
+
+if len(argv) != 2:
+    print("Improper implementation!")
+    print("Usage: python3 main.py <file_path>")
+    exit()
+
+if not os.path.exists(file_path):
+    print("File not found!")
+    exit()
+
+striped_name = os.path.splitext(os.path.basename(file_path))[0]
+
+transcript_file = None
+if not os.path.exists(f"transcripts/{striped_name}_transcript.txt"):
+    transcript_file = open(f"transcripts/{striped_name}_transcript.txt", "x+")
+else:
+    transcript_file = open(f"transcripts/{striped_name}_transcript.txt", "w")
 
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -28,11 +49,9 @@ pipe = pipeline(
 
 dataset = load_dataset("distil-whisper/librispeech_long", "clean", split="validation")
 
-transcript_file = open("transcript.txt", "w")
-result = pipe("harvard.mp3", return_timestamps=True)
+result = pipe(file_path, return_timestamps=True)
 
 for chunk in result["chunks"]:
-    print(chunk["timestamp"])
     transcript_file.write(str(chunk["timestamp"][0]))
     transcript_file.write(": ")
     transcript_file.write(chunk["text"])
